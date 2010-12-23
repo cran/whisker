@@ -2,8 +2,8 @@
 \alias{whisker.render}
 \title{Logicless templating}
 \usage{
-  whisker.render(template, data = parent.frame(), partials
-  = list(), debug = FALSE)
+  whisker.render(template, data = parent.frame(),
+    partials = list(), debug = FALSE)
 }
 \arguments{
   \item{template}{\code{character} with template text}
@@ -12,7 +12,7 @@
   variables that will be used during rendering}
 
   \item{partials}{named \code{list} with partial templates,
-  will be used during template contruction}
+  will be used during template construction}
 
   \item{debug}{Used for debugging purposes, likely to
   disappear}
