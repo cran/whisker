@@ -8,6 +8,8 @@ PARTIAL <- ">\\s*(.+?)\\s*"
 COMMENT <- "!.+?"
 DELIM <- "=\\s*(.+?)\\s*="
 
+STANDALONE <- "[#/^][A-z0-9]+"
+
 #keytypes
 keytypes <- c("", "{}", "&", "#", "^", "/", ">")
 
@@ -15,7 +17,7 @@ keytypes <- c("", "{}", "&", "#", "^", "/", ">")
 # current parsing code is not a clean parsing state machine!
 # This is partly due to that this would be clumsy in R, 
 # It's on my list to do the parsing in C (would be significantly faster)
-parseTemplate <- function(template, partials=new.env(), debug=FALSE){
+parseTemplate <- function(template, partials=new.env(), debug=FALSE, strict=TRUE){
   #TODO add delimiter switching
 
   delim <- tag2delim()
@@ -25,9 +27,10 @@ parseTemplate <- function(template, partials=new.env(), debug=FALSE){
   template <- removeComments(template, delim)
   
   template <- inlinePartial(template, delim)
-  template <- inlineStandAlone(template, delim, ENDSECTION)
-  template <- inlineStandAlone(template, delim, SECTION)
-  template <- inlineStandAlone(template, delim, INVERTEDSECTION)
+  template <- inlineStandAlone2(template, delim, STANDALONE)
+#   template <- inlineStandAlone(template, delim, ENDSECTION)
+#   template <- inlineStandAlone(template, delim, SECTION)
+#   template <- inlineStandAlone(template, delim, INVERTEDSECTION)
  
   KEY <- delimit("(.+?)", delim)
  
@@ -91,7 +94,7 @@ parseTemplate <- function(template, partials=new.env(), debug=FALSE){
   renders <- render[!exclude]
   
   compiled <- function(data=list(), context=list(data)){
-    values <- lapply(keys, resolve, context=context)
+    values <- lapply(keys, resolve, context=context, strict=strict)
     keyinfo <- key
     renderTemplate( values=values
                   , context=context
@@ -131,6 +134,19 @@ getKeyInfo <- function(template, KEY){
   key$key <- gsub(ENDSECTION, "\\1",key$key)
   key$key <- gsub(PARTIAL, "\\1",key$key)
   key
+}
+
+inlineStandAlone2 <- function(text, delim, keyregexp){
+  # remove groups from regexp
+  keyregexp <- gsub("\\(|\\)","",keyregexp)
+  
+  dKEY <- delimit(keyregexp, delim)
+  
+  re <- paste("(?<=\n|^)([ \t]*)(",dKEY,")\\s*?(\n|$)", sep="")
+  
+  rex <- gregexpr(re, text, perl=T)
+  rex1 <- gregexpr(dKEY, text)
+  gsub(re, "\\2",  text, perl=T)
 }
 
 inlineStandAlone <- function(text, delim, keyregexp){
