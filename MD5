@@ -1,4 +1,4 @@
-93e275e47dc453ecca0faef05e2d3468 *DESCRIPTION
+8541cc3343eea8180f32f2d24bfed864 *DESCRIPTION
 b3cd55b2ddfa8e6bf328211ca5b9241b *NAMESPACE
 cb7f9a1c05ea8f228d6df93a9453ba19 *NEWS
 ea1712bff13f42ca1bc3fb105fce2677 *R/delim.R
@@ -38,7 +38,7 @@ ff7067de00d777e150106157625281bf *man/isFalsey.Rd
 5ce3abc68bf4edc6a255573cb9a3620c *man/iteratelist.Rd
 be7490f6378af93df4bdf05fb7d4fd69 *man/rowSplit.Rd
 e558b310683ef306fdfbb2142962d09b *man/rxsplit.Rd
-e570b9a54615676e3821ede8ab88c2cf *man/tag2delim.Rd
+d015fdbe2f0570afe7aef25db039477c *man/tag2delim.Rd
 21c11174db2129b91e550d878b893835 *man/whisker-package.Rd
 6f7ad96ca79b6e357490451419520433 *man/whisker.escape.Rd
 4e42131fdcaeca095a20f2fd588e63ff *man/whisker.render.Rd
